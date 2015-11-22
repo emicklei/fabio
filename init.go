@@ -10,7 +10,7 @@ import (
 	"github.com/eBay/fabio/config"
 	"github.com/eBay/fabio/metrics"
 	"github.com/eBay/fabio/registry"
-	"github.com/eBay/fabio/registry/consul"
+	"github.com/eBay/fabio/registry/gcp"
 	"github.com/eBay/fabio/route"
 )
 
@@ -26,7 +26,14 @@ func loadConfig(filename string) *config.Config {
 
 func initBackend(cfg *config.Config) {
 	var err error
-	be, err = consul.NewBackend(&cfg.Consul)
+	//	be, err = consul.NewBackend(&cfg.Consul)
+
+	// Temporary to get things working
+	be, err = gcp.NewMetadataService(gcp.GoogleCloudPlatform{
+		SecondsBetweenUpdate: 30,
+		Project:              os.Getenv("GCP_PROJECT"),
+		Zone:                 os.Getenv("GCP_ZONE"),
+	})
 	if err != nil {
 		log.Fatal("[FATAL] Error initializing backend. ", err)
 	}

@@ -9,7 +9,6 @@ value: scheme=http&port=8080&path=/
 
 import (
 	"log"
-	"os"
 	"strings"
 	"time"
 
@@ -20,29 +19,22 @@ import (
 
 const FabioKey = "fabio"
 
-type Config struct {
+type GoogleCloudPlatform struct {
 	SecondsBetweenUpdate int
 	Project              string
 	Zone                 string
-}
-
-// for now read config from environment vars passed in by docker
-func readConfig() Config {
-	return Config{
-		SecondsBetweenUpdate: 30,
-		Project:              os.Getenv("GCP_PROJECT"),
-		Zone:                 os.Getenv("GCP_ZONE"),
-	}
 }
 
 // https://cloud.google.com/compute/docs/metadata?hl=en
 type metadataService struct {
 	routeInstructions chan string
 	computeService    *compute.Service
-	config            Config
+	config            GoogleCloudPlatform
 }
 
-func NewMetadataService() (*metadataService, error) {
+// NewMetadataService returns a new metadataService provides a backend implementation
+// that periodically queries the metadataservice of the Google Cloud Platform
+func NewMetadataService(cfg GoogleCloudPlatform) (*metadataService, error) {
 	client, err := google.DefaultClient(oauth2.NoContext, "https://www.googleapis.com/auth/compute")
 	if err != nil {
 		return nil, err
@@ -54,7 +46,7 @@ func NewMetadataService() (*metadataService, error) {
 	service := &metadataService{
 		routeInstructions: make(chan string),
 		computeService:    computeService,
-		config:            readConfig(),
+		config:            cfg,
 	}
 	go service.poll()
 	return service, nil
