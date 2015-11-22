@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/url"
 
-	"google.golang.org/api/compute/v1"
+	"github.com/eBay/fabio/_third_party/google.golang.org/api/compute/v1"
 )
 
 // scheme=http&path=/here&port=80

@@ -3,7 +3,7 @@ package gcp
 import (
 	"testing"
 
-	"google.golang.org/api/compute/v1"
+	"github.com/eBay/fabio/_third_party/google.golang.org/api/compute/v1"
 )
 
 func TestBuildInstruction(t *testing.T) {

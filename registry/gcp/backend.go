@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
-	"google.golang.org/api/compute/v1"
+	"github.com/eBay/fabio/_third_party/golang.org/x/oauth2"
+	"github.com/eBay/fabio/_third_party/golang.org/x/oauth2/google"
+	"github.com/eBay/fabio/_third_party/google.golang.org/api/compute/v1"
 )
 
 const FabioKey = "fabio"
